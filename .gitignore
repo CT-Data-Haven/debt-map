@@ -1,0 +1,7 @@
+# Comes with the R project
+.Rproj.user
+
+# Mac and Windows file rubbish
+.DS_Store
+desktop.ini
+*desktop.ini

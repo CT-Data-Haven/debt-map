@@ -1,0 +1,98 @@
+---
+title: "nathan's rough draft"
+author: "nathan"
+date: "7/16/2021"
+output: html_document
+---
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(here)
+library(sf)
+library(cwi)
+library(viridis)
+# run this line if you want to use some setup code i wrote up
+source(here::here("code", "setup.R"))
+```
+
+First is data import! I'm using the `here::here()` function to handle file paths consistently/reliably in Rmarkdown. I'm also making one edit to Camille's `new_haven_sf` dataset from the `cwi` package, to fit the data Annie Harper provided to us. 
+
+```{r, message = FALSE}
+dta <- here("data","debt_counts_Neighborhood_all_aggr.csv") %>% 
+  read_csv()
+colname_conversions <- here("data", "colname_conversions.csv") %>% 
+  read_csv()
+
+new_haven_sf <- mutate(new_haven_sf, 
+                       name = ifelse(name == "Wooster Sq/ Mill River",
+                                             "Wooster Square",
+                                             as.character(name)))
+```
+
+Second is data cleanup. I'm planning to iterate through my columns in a loop, so I'm "pivoting" the data so that the columns become copied into rows. This way it can be "split" row-wise, and each item in the resulting split can be passed through the loop. I also tack on some name revisions from a spreadsheet I hand-coded for the column names, and I attach geometries so that these data can be mapped. 
+
+```{r}
+dta <- dta %>% 
+  select(neighborhood:avg_unsecured_share_all) %>% 
+  left_join(new_haven_sf, c("neighborhood" = "name")) %>% 
+  pivot_longer(avg_total_debts_all:avg_unsecured_share_all) %>%  
+  left_join(colname_conversions, by = "name") %>% 
+  st_as_sf() %>% 
+  group_split(name)
+
+```
+
+And lastly there's actually writing the loop and iterating through it. I'm using `map` from the `purrr` library, which is the community-preferred way of looping. The `map` function lets you define a function outside of the actual loop (it could also be inside, your choice). This encouraged flexibility is an alternative to the structure of the `for` loop, and the refresh of scope and state also can make code more prone to catching errors before they mess you up. The `map` function lastly also fits well in the dplyr pipe (the `%>%` symbol). 
+
+I just create one simple choropleth and one simple bar chart for each variable. 
+
+```{r, results = 'hide'}
+process_group <- function(dta_group){
+  name <- unique(dta_group$name)
+  replacement <- unique(dta_group$replacement)
+  
+  #a very basic map
+  ggplot(dta_group) +
+    geom_sf(aes(fill = value)) + 
+    labs(title = replacement, fill = NULL) + 
+    scale_fill_viridis(option = "magma") + 
+    theme_map() + 
+    theme(legend.key.height = unit(2, "lines")) + 
+    ggsave(here("plots", "nathan_rough", "maps", paste0(name, ".png")),
+           height = 7, width = 7)
+  
+  # a very basic bar chart
+  dta_group %>% 
+    drop_na(value) %>% 
+    mutate(highlight = rank(value, "first"),
+           highlight = case_when(highlight > max(highlight) - 3 ~ T, 
+                                 highlight < min(highlight) + 3 ~ F,
+                                 T ~ NA),
+           neighborhood = fct_reorder(neighborhood, value) %>% fct_drop()) %>% 
+    drop_na(highlight) %>% 
+    ggplot() + 
+    geom_bar(aes(x = neighborhood, y = value, fill = highlight),
+             stat = "identity") + 
+    scale_fill_manual(values = c("#33658A", "#F6AE2D")) + 
+    labs(title = replacement, 
+         y = NULL, x = "Neighborhood",
+         caption = "Top three and bottom three neighborhoods for the metric are shown.") + 
+    theme_bw(base_family = "Lato") + 
+    theme(legend.position = "none",
+          plot.background = element_rect(fill = NA)) + 
+    ggsave(here("plots", "nathan_rough", "bars", paste0(name, ".png")),
+           height = 7, width = 7)
+  return(invisible(NULL))
+}
+
+dta %>% 
+  map(process_group)
+```
+
+Lots of things to revise!
+
+- Color palettes
+- Theming (font sizes/text hierarchy)
+- Specific trends we want to highlight
+- Some bar charts have four, some have three. Why? 
+

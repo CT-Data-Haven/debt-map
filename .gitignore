@@ -1,5 +1,7 @@
 # Comes with the R project
 .Rproj.user
+.Rhistory
+.RData
 
 # Mac and Windows file rubbish
 .DS_Store

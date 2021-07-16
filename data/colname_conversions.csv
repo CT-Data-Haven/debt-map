@@ -1,0 +1,12 @@
+name,replacement
+avg_total_debts_all,Proportion with Debts (all kinds) 
+avg_non_loan_all,Proportion with Non-Loan Debts
+avg_secured_all,Proportion with Secured Debts
+avg_unsecured_all,Proportion with Unsecured Debts
+avg_credit_card_all,Proportion with Credit_Card Debts
+avg_student_loan_all,Proportion with Student_Loan Debts
+avg_friends_family_all,Proportion with Friends and Family Debts
+avg_utilities_all,Proportion with Utilities Debts
+avg_non_loan_share_all,Average Share of Non-Loan Debts
+avg_secured_share_all,Average Share of Secured Debts
+avg_unsecured_share_all,Average Share of Unsecured Debts

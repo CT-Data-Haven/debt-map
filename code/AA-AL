@@ -1,2 +1,40 @@
-
 #remove columns 2-25 in debt_counts_Neighborhood_all_aggr.csv 
+library(tidyverse)
+library(showtext)
+library(tidycensus)
+library(tigris)
+library(sf)
+library(viridis)
+library(viridisLite)
+library(readxl)
+
+font_add_google("Lato", family = "Lato")
+showtext_auto() 
+showtext_opts(dpi  =300)
+theme_map <- function(base_family = "Lato", base_size = 11, ...) {
+  theme_void(base_family = base_family, base_size = base_size, ...) +
+    theme(plot.title.position = "plot",
+          plot.caption.position = "panel",
+          strip.text = element_text(face = "bold", size = rel(1)),
+          legend.title = element_text(size = rel(1)),
+          legend.text = element_text(size = rel(1)),
+          legend.key.width = unit(1.1, "lines"),
+          legend.key.height = unit(0.8, "lines"),
+          text = element_text(size = base_size), 
+          plot.title = element_text(face = "bold", family = "Lato", size = rel(2)),
+          plot.subtitle = element_text(face = "plain", size = rel(1.5)), 
+          plot.caption = element_text(face = "plain")) 
+  
+}
+
+full_data <- read_excel("Debt Map AA-AL data.xlsx")
+View(full_data) 
+
+#full_data %>%
+col_names <- (colnames(full_data)[-1])
+for (column in full_data){
+  ggplot(full_data, aes_string(neighborhood, column), fill = col_names)
+}
+#  geom_sf(color = NA) +
+#  labs(title = column) + scale_color_viridis_c(option = "magma")
+#%>%

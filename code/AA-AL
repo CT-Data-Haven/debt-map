@@ -1,4 +1,6 @@
-#remove columns 2-25 in debt_counts_Neighborhood_all_aggr.csv 
+#removed columns 2-25 in debt_counts_Neighborhood_all_aggr.csv 
+#still need to filter, design and save plots
+
 library(tidyverse)
 library(showtext)
 library(tidycensus)
@@ -8,6 +10,7 @@ library(viridis)
 library(viridisLite)
 library(readxl)
 
+#Standard Setup
 font_add_google("Lato", family = "Lato")
 showtext_auto() 
 showtext_opts(dpi  =300)
@@ -23,18 +26,78 @@ theme_map <- function(base_family = "Lato", base_size = 11, ...) {
           text = element_text(size = base_size), 
           plot.title = element_text(face = "bold", family = "Lato", size = rel(2)),
           plot.subtitle = element_text(face = "plain", size = rel(1.5)), 
-          plot.caption = element_text(face = "plain")) 
-  
+          plot.caption = element_text(face = "plain"))
 }
 
+#reading the data 
 full_data <- read_excel("Debt Map AA-AL data.xlsx")
 View(full_data) 
 
-#full_data %>%
-col_names <- (colnames(full_data)[-1])
-for (column in full_data){
-  ggplot(full_data, aes_string(neighborhood, column), fill = col_names)
-}
-#  geom_sf(color = NA) +
-#  labs(title = column) + scale_color_viridis_c(option = "magma")
-#%>%
+#defining variables
+dependent_var <- full_data[-1]
+
+#filtering data
+for (column in dependent_var){
+  filtered <- top_n(full_data, 5, column)
+  view(filtered)}
+#lowest: by(ordered, ordered[dependent_var], head, n = 5))
+
+#size_all plot
+ggplot(full_data, aes(neighborhood, size_all)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Debts:") +
+
+#avg_total_debts_30K plot
+ggplot(full_data, aes(neighborhood, avg_total_debts_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_non_loan_30K plot
+ggplot(full_data, aes(neighborhood, avg_non_loan_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_secured_30K plot
+ggplot(full_data, aes(neighborhood, avg_secured_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_unsecured_30K plot
+ggplot(full_data, aes(neighborhood, avg_unsecured_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_credit_card_30K plot
+ggplot(full_data, aes(neighborhood, avg_credit_card_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Credit Card Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_student_loan_30K plot
+ggplot(full_data, aes(neighborhood, avg_student_loan_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Student Loan Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_friends_family_30K plot
+ggplot(full_data, aes(neighborhood, avg_friends_family_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Friends/Family Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_utilities_30K plot
+ggplot(full_data, aes(neighborhood, avg_utilities_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Utilities Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_non_loan_share_30K plot
+ggplot(full_data, aes(neighborhood, avg_non_loan_share_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Non-loan Share Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_secured_share_30K plot
+ggplot(full_data, aes(neighborhood, avg_secured_share_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Secured Share Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")
+
+#avg_unsecured_share_30K plot
+ggplot(full_data, aes(neighborhood, avg_unsecured_share_30K)) +
+  geom_col() + xlab("Neighborhood") + ylab("Debt") +
+  labs(title = "Average Unsecured Share Debts:", caption = "The top 5 and bottom 5 neighborhoods with debts under $30,000 are displayed")

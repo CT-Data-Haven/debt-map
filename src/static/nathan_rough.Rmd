@@ -12,7 +12,7 @@ library(sf)
 library(cwi)
 library(viridis)
 # run this line if you want to use some setup code i wrote up
-source(here::here("code", "setup.R"))
+source(here::here("src", "static", "setup.R"))
 ```
 
 First is data import! I'm using the `here::here()` function to handle file paths consistently/reliably in Rmarkdown. I'm also making one edit to Camille's `new_haven_sf` dataset from the `cwi` package, to fit the data Annie Harper provided to us. 

@@ -2,10 +2,10 @@
 # Pro-Bono Technical Assistance for Annie Harper (Yale School of Medicine) - Debt Map
 
 library(ggplot2)
-
+setwd("~/Documents/GitHub/debt-map/data")
 
 # reading in the data
-debt_counts <- read.csv("data/debt_counts_Neighborhood_all_aggr.csv")
+debt_counts <- read.csv("debt_counts_Neighborhood_all_aggr.csv")
 
 View(debt_counts)
 

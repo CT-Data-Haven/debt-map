@@ -1,0 +1,36 @@
+---
+title: "New Haven Debt Map"
+Author: "Annie Harper & Tommaso Bardelli"
+output: pdf_document
+---
+
+When people have debts, including unpaid bills, that they struggle to repay, they are less able to afford daily necessities or to plan for and invest in the future. Debt can also affect physical and mental health. When families struggle with debt, cities bear the costs of helping them deal with the consequences. The COVID-19 health crisis has worsened the situation for many families that were already burdened by debt. The New Haven Debt Map project is a community-based research study that seeks to better understand the debt experiences of low-income families in New Haven, the impact of that debt on health, and how we can change policies to reduce the debt burden. Please contact Annie Harper (annie.harper@yale.edu) or Tommaso Bardelli (tb1068@nyu.edu)[tb1068@nyu.edu]) for more information, or if you are interested in participating in the project.
+
+During the summer of 2020, an online and telephonic survey was conducted with 402 adult residents of New Haven, most of whom were low-income. See here for more information about our methods and the demographics of the survey sample. The project was funded by the Johns Hopkins 21st Century Cities Initiative.
+
+*graphic – using bar chart, summarize data about # of debts – 0, 1-2, 3-4, 4+; break down the data by race (Black, White, Latinx) AND/OR income group ((<10k, 10-20k, 20-30k, 30-75k, >75k)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
